@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Geolocation Example</title>
@@ -60,10 +60,113 @@
         }
 
         function showPosition(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            document.getElementById("latitude").innerHTML = latitude;
-            document.getElementById("longitude").innerHTML = longitude;
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+
+    // Construct the URL with query parameters
+    var url = "http://localhost:3000/location";
+    
+    // Prepare the data to send
+    var data = {
+        latitude: latitude,
+        longitude: longitude
+    };
+
+    // Make the AJAX request
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: data,
+        success: function(response) {
+            // Redirect the user to the specified route
+            window.location.href = response.redirectTo;
+        },
+        error: function(xhr, status, error) {
+            // Handle any errors here
+            console.error("Request failed with status:", status);
+        }
+    });
+}
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geolocation Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            max-width: 500px;
+            width: 80%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Geolocation Example</h1>
+        <p>Click the button below to get your current location:</p>
+        <button onclick="getLocation()">Get Location</button>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    // Create a new XMLHttpRequest object
+                    var xhr = new XMLHttpRequest();
+
+                    // Specify the URL where you want to send the GET request
+                    var url = "http://example.com/your-endpoint?latitude=" + latitude + "&longitude=" + longitude;
+
+                    // Configure the request
+                    xhr.open("GET", url, true);
+
+                    // Set up a callback function to handle the response
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            // Request was successful, you can process the response here if needed
+                            console.log("Server response:", xhr.responseText);
+
+                            // Redirect to the new page URL received in the response
+                            var response = JSON.parse(xhr.responseText);
+                            window.location.href = response.redirectURL;
+                        } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                            // Request failed, handle the error here
+                            console.error("Request failed with status:", xhr.status);
+                        }
+                    };
+
+                    // Send the request
+                    xhr.send();
+                });
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
         }
     </script>
 </body>
