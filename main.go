@@ -83,8 +83,3 @@ func DisplayLocation(c *gin.Context) {
 func indexHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", nil)
 }
-
-type Data struct {
-	Latitude  string `json:"latitude"`
-	Longitude string `json:"longitude"`
-}
