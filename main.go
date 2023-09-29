@@ -32,23 +32,22 @@ func main() {
 }
 
 func DisplayLocation(c *gin.Context) {
-	// Retrieve latitude and longitude from query parameters
+
 	longitude := c.Query("long")
 	latitude := c.Query("lat")
 
-	// Ensure latitude and longitude are not empty
 	if latitude == "" || longitude == "" {
 		c.String(http.StatusBadRequest, "Latitude and longitude are required.")
 		return
 	}
 
-	// Get the Mapbox access token from environment variables
+	//mapbox token
 	accessToken := os.Getenv("TOKEN")
 
 	// Base URL for the Mapbox Geocoding API
 	baseURL := "https://api.mapbox.com/geocoding/v5/mapbox.places/"
 
-	// Create a URL object
+	//creating url object
 	u, err := url.Parse(baseURL)
 	if err != nil {
 		fmt.Println("Error parsing URL:", err)
@@ -69,6 +68,7 @@ func DisplayLocation(c *gin.Context) {
 	// Convert the URL object back to a string
 	finalURL := u.String()
 
+	//call helper and get result
 	response, err := helpers.SendRequestAndFindPlace(finalURL)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "error in server")
@@ -77,7 +77,6 @@ func DisplayLocation(c *gin.Context) {
 
 	fmt.Println("Final URL:", finalURL)
 
-	// Now, you can proceed with your HTML response or further processing
 	c.HTML(http.StatusOK, "location.html", response)
 }
 
