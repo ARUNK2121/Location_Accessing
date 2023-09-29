@@ -82,7 +82,6 @@ func DisplayLocation(c *gin.Context) {
 }
 
 func indexHandler(c *gin.Context) {
-
 	c.HTML(http.StatusOK, "index.html", nil)
 }
 
